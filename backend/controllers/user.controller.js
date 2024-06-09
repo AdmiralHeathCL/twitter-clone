@@ -40,7 +40,7 @@ export const followUnfollowUser = async (req, res) => {
             await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } });
 
             const newNotification = new Notification({
-                type: "unfollow",
+                type: "follow",
                 from: req.user._id,
                 to: userToModify._id,
             });
@@ -105,7 +105,7 @@ export const updateUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         if((!newPassword && currentPassword) || (!currentPassword && newPassword)) {
-            return res.status(400).json({ message: "Please provide both current password and new password" });
+            return res.status(400).json({ error: "Please provide both current password and new password" });
         }
 
         if(currentPassword && newPassword) {
